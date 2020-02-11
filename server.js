@@ -3,6 +3,8 @@ require('./server/db-conn')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const https = require('https')
+const fs = require('fs')
 
 const app = express()
 app.use(bodyParser.json())
@@ -17,6 +19,21 @@ app.get('/*', (req, res) => {
     res.send('response from server!')
 })
 
-
 const { PORT } = process.env
-app.listen( PORT, () => console.log(`listening on port ${PORT}`))
+
+const options = {
+    pfx: fs.readFileSync('mycert.pfx'),
+    passphrase: ' '
+  };
+https.createServer(options, app)
+    .listen(PORT, () => console.log(`HTTPS port ${PORT}`))  
+
+// https.createServer(options, (req, res) => {
+// console.log('from https')
+// // res.writeHead(200);
+// // res.end('hello world\n');
+// }).listen(PORT, () => console.log(`HTTPS port ${PORT}`))
+
+app.listen( 5001, () => {
+    console.log(`listening on port 5001`)
+})
