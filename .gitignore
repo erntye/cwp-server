@@ -1,3 +1,5 @@
 .env
 *.config.js
 *.pfx
+mycert.pfx
+cwpprotokeyvault-mycert-20200210.pfx
